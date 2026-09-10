@@ -10,4 +10,6 @@ Bài 2:
 <img width="1273" height="207" alt="image" src="https://github.com/user-attachments/assets/6c437958-c59d-4ea4-bda2-ff16d0bd4678" />
 
 Bài 3:
+<img width="1301" height="864" alt="image" src="https://github.com/user-attachments/assets/47bdfac0-7ad2-44d3-a394-ba061c1ddbab" />
+<img width="1663" height="307" alt="image" src="https://github.com/user-attachments/assets/a5f87ce6-01fb-4171-bc3c-8c4fc7a48ca2" />
 
