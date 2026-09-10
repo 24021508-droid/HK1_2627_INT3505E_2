@@ -13,3 +13,11 @@ Bài 3:
 <img width="1301" height="864" alt="image" src="https://github.com/user-attachments/assets/47bdfac0-7ad2-44d3-a394-ba061c1ddbab" />
 <img width="1663" height="307" alt="image" src="https://github.com/user-attachments/assets/a5f87ce6-01fb-4171-bc3c-8c4fc7a48ca2" />
 
+Bài 4:
+<img width="892" height="870" alt="image" src="https://github.com/user-attachments/assets/b70462d5-47fd-46b4-a380-66fc1a74221f" />
+
+Bài 5:
+1> Test xoá thành công 
+<img width="1246" height="229" alt="image" src="https://github.com/user-attachments/assets/5b8840c1-0417-447d-a401-0043c1c68782" />
+2> Test xoá thứ không có 
+<img width="771" height="310" alt="image" src="https://github.com/user-attachments/assets/be66f50b-6503-41e3-8591-8707314e7fc1" />
