@@ -21,3 +21,13 @@ Bài 5:
 <img width="1246" height="229" alt="image" src="https://github.com/user-attachments/assets/5b8840c1-0417-447d-a401-0043c1c68782" />
 2> Test xoá thứ không có 
 <img width="771" height="310" alt="image" src="https://github.com/user-attachments/assets/be66f50b-6503-41e3-8591-8707314e7fc1" />
+
+ Bài 6: 
+ -build: <img width="1536" height="265" alt="image" src="https://github.com/user-attachments/assets/b15fc6a3-7c9c-4337-b18d-3671f5db37a7" />
+ -test case 1: <img width="1014" height="235" alt="image" src="https://github.com/user-attachments/assets/6b7fbdba-42ad-44b9-98ce-bfb87f361218" />
+ -test case 2: <img width="744" height="183" alt="image" src="https://github.com/user-attachments/assets/d874e04e-d0ab-4def-ba49-72ed654f779a" />
+ -test case 3: <img width="1609" height="226" alt="image" src="https://github.com/user-attachments/assets/1fd43344-c7e7-4622-87a6-e8789e1021d0" />
+ -test case 4: <img width="1549" height="172" alt="image" src="https://github.com/user-attachments/assets/10938fe8-edb4-4135-83c6-3a74cfe5eb33" />
+- test case 5: <img width="953" height="147" alt="image" src="https://github.com/user-attachments/assets/1fe6732a-3110-4ef3-8bcd-5e6426b5c238" />
+- test case 6: <img width="1308" height="133" alt="image" src="https://github.com/user-attachments/assets/be6eda1d-f561-4135-bdd3-4f2590f1e63f" />
+
