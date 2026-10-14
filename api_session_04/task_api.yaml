@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info: 
+  title: Tasks API
+  version: 1.0.0
+  description: Quản lý task nội bộ
+servers: 
+  - url: 'http://localhost:5000/v1'
+security: 
+  - bearerAuth: []
+tags: 
+  - name: tasks
+
+paths:
+  /tasks:
+    get:
+      operationId: listTasks
+      tags: [tasks]
+      parameters:
+        - $ref: '#/components/parameters/PageLimit'
+        - $ref: '#/components/parameters/StatusFilter'
+      responses:
+        '200': 
+          $ref: '#/components/responses/TaskPage'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+    
+    post:
+      operationId: createTask
+      tags: [tasks]
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateTaskInput'
+      responses: 
+        '201':
+          $ref: '#/components/responses/TaskResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /tasks/{taskId}:
+    parameters:
+      - in: path
+        name: taskId
+        required: true
+        schema: 
+          type: string
+          format: uuid
+    get: 
+      operationId: getTaskById
+      tags: [tasks]
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskResponse'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+    
+    patch: 
+      operationId: patchTask
+      tags: [tasks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskResponse'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+          
+    delete: 
+      operationId: deleteTask
+      tags: [tasks]
+      responses:
+        '204':
+          description: No content
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+
+components: 
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Task:
+      type: object
+      properties:
+        id: {type: string, format: uuid}
+        title: {type: string}
+        status: {type: string, enum: [open, in_progress, done]}
+        priority: {type: string, enum: [low, normal, high]}
+        dueDate: {type: string, format: date}
+        assigneeId: {type: string, format: uuid}
+        
+    CreateTaskInput:
+      type: object
+      required: [title]
+      properties:
+        title: {type: string}
+        status: {type: string, default: open}
+        priority: {type: string, default: normal}
+        dueDate: {type: string, format: date}
+        assigneeId: {type: string, format: uuid}
+        
+    UpdateTaskInput:
+      type: object
+      properties:
+        title: {type: string}
+        status: {type: string}
+        priority: {type: string}
+        dueDate: {type: string, format: date}
+        assigneeId: {type: string, format: uuid}
+
+  parameters:
+    PageLimit:
+      name: limit
+      in: query
+      schema: {type: integer, default: 10}
+    StatusFilter:
+      name: status
+      in: query
+      schema: {type: string}
+
+  responses:
+    TaskPage:
+      description: Danh sách task trả về thành công
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Task'
+    TaskResponse:
+      description: Trả về thông tin của một task
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Task'
+    Unauthorized:
+      description: Lỗi xác thực
+    ValidationError:
+      description: Dữ liệu đầu vào không hợp lệ
