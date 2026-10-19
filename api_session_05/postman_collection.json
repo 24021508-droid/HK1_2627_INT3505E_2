@@ -1,0 +1,175 @@
+{
+  "info": {
+    "_postman_id": "b1a2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Lab 2 - Bookstore API Pagination & Filtering",
+    "description": "Collection cho Bài 2 - Flask pagination (Hỗ trợ Offset & Cursor qua ?strategy=, filter ?genre, multi-key sort)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Offset Pagination - Trang 1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books?strategy=offset&limit=5&offset=0",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"],
+          "query": [
+            { "key": "strategy", "value": "offset" },
+            { "key": "limit", "value": "5" },
+            { "key": "offset", "value": "0" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. Offset Pagination - Trang 2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books?strategy=offset&limit=5&offset=5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"],
+          "query": [
+            { "key": "strategy", "value": "offset" },
+            { "key": "limit", "value": "5" },
+            { "key": "offset", "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Cursor Pagination - Trang đầu tiên",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books?strategy=cursor&limit=5&sort=-id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"],
+          "query": [
+            { "key": "strategy", "value": "cursor" },
+            { "key": "limit", "value": "5" },
+            { "key": "sort", "value": "-id" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Filter theo Genre (Technology)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books?genre=Technology&strategy=offset",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"],
+          "query": [
+            { "key": "genre", "value": "Technology" },
+            { "key": "strategy", "value": "offset" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. Multi-key Sort: Giá giảm dần (-price), Tiêu đề tăng dần (title)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books?sort=-price,title&strategy=offset&limit=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"],
+          "query": [
+            { "key": "sort", "value": "-price,title" },
+            { "key": "strategy", "value": "offset" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Kết hợp Filter Genre + Multi-key Sort + Cursor Pagination",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books?genre=Technology&sort=-price,title&strategy=cursor&limit=5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"],
+          "query": [
+            { "key": "genre", "value": "Technology" },
+            { "key": "sort", "value": "-price,title" },
+            { "key": "strategy", "value": "cursor" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Test Bad Sort Validation (Kỳ vọng 400 Bad Request)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books?sort=sql_injection_attempt",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"],
+          "query": [
+            { "key": "sort", "value": "sql_injection_attempt" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "8. Chi tiết sách (GET /books/{id})",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books", "1"]
+        }
+      }
+    },
+    {
+      "name": "9. Thêm sách mới (POST /books)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Modern API Design\",\n  \"isbn\": \"9780123456789\",\n  \"price_vnd\": 450000,\n  \"stock\": 25,\n  \"genre\": \"Technology\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/v1/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "v1", "books"]
+        }
+      }
+    }
+  ]
+}

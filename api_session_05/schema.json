@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quiz App Schema",
+  "$defs": {
+    "User": {
+      "title": "User",
+      "type": "object",
+      "required": ["id", "passwords"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Thuộc tính ID của User từ ERD"
+        },
+        "passwords": {
+          "type": "string",
+          "description": "Thuộc tính Passwords của Account từ ERD"
+        }
+      }
+    },
+    "Quiz": {
+      "title": "Quiz",
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^quiz_[a-z0-9]+$",
+          "description": "Mã định danh duy nhất của đề trắc nghiệm"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 5,
+          "description": "Tiêu đề của đề trắc nghiệm (bắt buộc)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Mô tả nội dung hoặc hướng dẫn làm bài (không bắt buộc)"
+        }
+      }
+    },
+    "Question": {
+      "title": "Question",
+      "type": "object",
+      "required": ["id", "point", "author"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^question_[a-z0-9]+$"
+        },
+        "point": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Thuộc tính Point của Question"
+        },
+        "author": {
+          "type": "string",
+          "description": "Thuộc tính author của Question"
+        }
+      }
+    },
+    "Attempt": {
+      "title": "Attempt",
+      "type": "object",
+      "required": ["id", "date", "number", "author"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^attempt_[a-z0-9]+$"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Thuộc tính Date của Attempt"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Thuộc tính number của Attempt"
+        },
+        "author": {
+          "type": "string",
+          "description": "Thuộc tính author của Attempt"
+        }
+      }
+    }
+  }
+}
