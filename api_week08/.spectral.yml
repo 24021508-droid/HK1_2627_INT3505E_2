@@ -1,0 +1,45 @@
+extends: ["spectral:oas"]
+
+rules:
+  # Turn off stylistic warnings so only contract & functional rules apply
+  info-contact: off
+  operation-description: off
+  operation-tags: off
+
+  # Lỗi 2: DELETE /books/{id} response 204 không được khai báo body/content
+  no-body-in-204:
+    description: "204 No Content response must not define a content body."
+    message: "HTTP 204 response must not have a content body."
+    given: "$.paths[*][*].responses['204']"
+    severity: error
+    then:
+      field: content
+      function: undefined
+
+  # Lỗi 3: Book.year phải có type là integer
+  book-year-integer:
+    description: "Book.year must have type integer matching the backend model."
+    message: "Book.year must be of type integer."
+    given: "$.components.schemas.Book.properties.year"
+    severity: error
+    then:
+      field: type
+      function: enumeration
+      functionOptions:
+        values:
+          - integer
+
+  # Custom rule: response 200 phải có nhiều hơn 0 trường trong schema (không được để schema rỗng)
+  response-200-has-properties:
+    description: "Response 200 schema must define properties or items, and not be empty."
+    message: "Response 200 schema must specify fields (must contain properties, items, or a $ref)."
+    given: "$.paths[*][*].responses['200'].content['application/json'].schema"
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          anyOf:
+            - required: ["properties"]
+            - required: ["items"]
+            - required: ["$ref"]

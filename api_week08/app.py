@@ -27,8 +27,10 @@ book_schema = BookInput()
 def create_app(config=None, cfg=None):
     """Application factory. ``cfg`` is accepted for lecture-code compatibility."""
     app = Flask(__name__)
+    db_path = Path("instance/books.db").resolve()
+    db_path.parent.mkdir(parents=True, exist_ok=True)
     app.config.update(
-        SQLALCHEMY_DATABASE_URI="sqlite:///" + str(Path("instance/books.db").resolve()),
+        SQLALCHEMY_DATABASE_URI="sqlite:///" + str(db_path),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         JSON_SORT_KEYS=False,
         TESTING=False,
@@ -153,9 +155,11 @@ def create_app(config=None, cfg=None):
     return app
 
 
+app = create_app()
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=5000)
     args = parser.parse_args()
-    application = create_app()
-    application.run(host="127.0.0.1", port=args.port, debug=False)
+    app.run(host="127.0.0.1", port=args.port, debug=False)
