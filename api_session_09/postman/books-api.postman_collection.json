@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Books API — Lab08 Starter",
-    "description": "Lab 3: add error-cases/ folder with POST missing title and GET missing id. Collection currently contains happy paths only.",
+    "description": "Lab 3: 5 happy-path + 2 error-case requests, runnable via Newman.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -15,12 +15,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/books",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "books"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["books"]
             }
           },
           "event": [
@@ -41,28 +37,17 @@
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "url": {
               "raw": "{{base_url}}/books",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "books"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["books"]
             },
             "body": {
               "mode": "raw",
               "raw": "{\"title\": \"DDIA\", \"author\": \"Kleppmann\", \"year\": 2017}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             }
           },
           "event": [
@@ -86,13 +71,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/books/{{book_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "books",
-                "{{book_id}}"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["books", "{{book_id}}"]
             }
           },
           "event": [
@@ -113,29 +93,17 @@
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "url": {
               "raw": "{{base_url}}/books/{{book_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "books",
-                "{{book_id}}"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["books", "{{book_id}}"]
             },
             "body": {
               "mode": "raw",
               "raw": "{\"title\": \"DDIA revised\", \"author\": \"Kleppmann\", \"year\": 2017}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "options": { "raw": { "language": "json" } }
             }
           },
           "event": [
@@ -158,13 +126,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/books/{{book_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "books",
-                "{{book_id}}"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["books", "{{book_id}}"]
             }
           },
           "event": [
@@ -175,6 +138,74 @@
                 "exec": [
                   "pm.test(\"204 No Content\", () => pm.response.to.have.status(204));",
                   "pm.test(\"empty body\", () => pm.expect(pm.response.text()).to.eql(\"\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "error-cases",
+      "item": [
+        {
+          "name": "POST /books (missing title)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/books",
+              "host": ["{{base_url}}"],
+              "path": ["books"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"author\": \"No Title Author\"}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"400 Bad Request\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"error code is VALIDATION_ERROR\", () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.code).to.eql(\"VALIDATION_ERROR\");",
+                  "  pm.expect(body.message).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /books/9999",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/books/9999",
+              "host": ["{{base_url}}"],
+              "path": ["books", "9999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"404 Not Found\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error code is NOT_FOUND\", () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.code).to.eql(\"NOT_FOUND\");",
+                  "  pm.expect(body.message).to.be.a(\"string\").and.not.empty;",
+                  "});"
                 ]
               }
             }

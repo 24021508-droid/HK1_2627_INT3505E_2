@@ -1,8 +1,4 @@
-"""Lab 4 starter: weighted tasks, optional 404, no deliberate server errors.
-
-Run: locust -f performance/locustfile.py --headless -H http://127.0.0.1:5000 \
-         -u 10 -r 2 -t 30s --html reports/A.html
-"""
+"""Lab 4: weighted tasks, search_by_year with 1% simulated failure, optional 404."""
 import itertools
 import random
 
@@ -12,6 +8,7 @@ _counter = itertools.count(1)
 
 
 class BooksUser(HttpUser):
+    host = "http://127.0.0.1:5000"
     wait_time = between(1, 3)
 
     @task(3)
@@ -39,5 +36,16 @@ class BooksUser(HttpUser):
             name="POST /books",
         )
 
-    # LAB 4: add search_by_year() and explain any injected failures.
-    # A client-side artificial failure is not a real HTTP 500 from the server.
+    @task(2)
+    def search_by_year(self):
+        year = random.choice([2017, 2020, 2021, 2022, 2023])
+        with self.client.get(
+            f"/books?year={year}", name="GET /books?year=[year]", catch_response=True
+        ) as response:
+            # 1% simulated failure (client-side marked as 500)
+            if random.random() < 0.01:
+                response.failure("Simulated 500: Artificial internal server error (1% injected failure)")
+            elif response.status_code == 200:
+                response.success()
+            else:
+                response.failure(f"Unexpected status {response.status_code}")
