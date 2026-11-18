@@ -1,0 +1,157 @@
+openapi: 3.0.3
+info:
+  title: User API (v1 & v2)
+  description: URI Path Versioning demo với Flask Blueprint
+  version: 2.0.0
+servers:
+  - url: http://127.0.0.1:5000
+    description: Local server
+paths:
+  /api/v1/users/{uid}:
+    get:
+      summary: Lấy thông tin user theo ID (v1 - deprecated)
+      deprecated: true
+      description: Phiên bản v1 trả về `full_name`. Endpoint này sắp tắt (xem header `Sunset`).
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Thành công
+          headers:
+            Sunset:
+              description: Thời điểm v1 sẽ ngừng hoạt động (RFC 8594)
+              schema:
+                type: string
+                example: "Wed, 01 Jul 2026 00:00:00 GMT"
+            Link:
+              description: Link đến version kế nhiệm (RFC 8594)
+              schema:
+                type: string
+                example: '</api/v2/users>; rel="successor-version"'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  full_name:
+                    type: string
+                    example: "Vũ Gia Hưng"
+                  email:
+                    type: string
+                    example: "a@vnu.vn"
+        '404':
+          description: Không tìm thấy user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "nf"
+
+  /api/v2/users/{uid}:
+    get:
+      summary: Lấy thông tin user theo ID (v2 - current)
+      description: Phiên bản v2 tách họ và tên thành `first_name` và `last_name`.
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  first_name:
+                    type: string
+                    example: "Vũ Gia"
+                  last_name:
+                    type: string
+                    example: "Hưng"
+                  email:
+                    type: string
+                    example: "a@vnu.vn"
+        '404':
+          description: Không tìm thấy user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "nf"
+
+  /api/v2/users:
+    post:
+      summary: Tạo user mới (v2)
+      description: Tạo mới người dùng với `first_name`, `last_name`, `email`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - first_name
+                - last_name
+                - email
+              properties:
+                first_name:
+                  type: string
+                  example: "Lê"
+                last_name:
+                  type: string
+                  example: "Hải Nam"
+                email:
+                  type: string
+                  example: "c@vnu.vn"
+      responses:
+        '201':
+          description: Tạo user thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  first_name:
+                    type: string
+                    example: "Lê"
+                  last_name:
+                    type: string
+                    example: "Hải Nam"
+                  email:
+                    type: string
+                    example: "c@vnu.vn"
+        '400':
+          description: Thiếu thông tin bắt buộc
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "validation_error"
+                  message:
+                    type: string
+                    example: "Các trường 'first_name', 'last_name', 'email' không được để trống"
